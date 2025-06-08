@@ -20,13 +20,13 @@ class PostService:
         self._observers = []  # cambio
 
     def attach(self, observer):#
-        """Agregar un observador para notificaciones de cambios"""
+        #Agregar un observador para notificaciones de cambios
         if observer not in self._observers:
             self._observers.append(observer)#cambio
 
     
     def create_post(self, user: User, content: str, purpose: str = "", source: str = "", image_path: str = None) -> bool:
-        """Crear un nuevo post"""
+        #Crear un nuevo post
         try:
             # Verificar límite diario de posts
             if user.daily_posts >= 3:
@@ -82,7 +82,7 @@ class PostService:
             return False
     
     def get_posts(self, limit: int = 50) -> List[Post]:
-        """Obtener lista de posts ordenados por fecha"""
+        #Obtener lista de posts ordenados por fecha
         try:
             posts_data = self.posts_collection.find().sort("timestamp", -1).limit(limit)
             posts = []
@@ -98,7 +98,7 @@ class PostService:
             return []
     
     def get_user_posts(self, user_id: str, limit: int = 20) -> List[Post]:
-        """Obtener posts de un usuario específico"""
+        #Obtener posts de un usuario específico
         try:
             posts_data = self.posts_collection.find(
                 {"user_id": user_id}
@@ -116,7 +116,7 @@ class PostService:
             return []
     
     def toggle_like(self, post_id: str, user_id: str) -> bool:
-        """Alternar like en un post"""
+        #Alternar corazon en un post
         try:
             post_doc = self.posts_collection.find_one({"_id": post_id})
             if not post_doc:
@@ -125,7 +125,7 @@ class PostService:
             likes = post_doc.get("likes_list", [])
             
             if user_id in likes:
-                # Quitar like
+                # Quitar corazon
                 self.posts_collection.update_one(
                     {"_id": post_id},
                     {
@@ -134,7 +134,7 @@ class PostService:
                     }
                 )
             else:
-                # Agregar like
+                # Agregar corazon
                 self.posts_collection.update_one(
                     {"_id": post_id},
                     {
@@ -150,7 +150,7 @@ class PostService:
             return False
     
     def share_post(self, post_id: str) -> bool:
-        """Compartir un post (incrementar contador)"""
+        #Compartir un post (incrementar contador)
         try:
             result = self.posts_collection.update_one(
                 {"_id": post_id},
@@ -163,7 +163,7 @@ class PostService:
             return False
     
     def add_comment(self, post_id: str, user_id: str, username: str, content: str) -> bool:
-        """Agregar comentario a un post (máx 3 por usuario por post)"""
+        #Agregar comentario a un post (máx 3 por usuario por post)
         try:
             # Obtener el post actual
             post_doc = self.posts_collection.find_one({"_id": post_id})
@@ -200,7 +200,7 @@ class PostService:
             return False
     
     def delete_post(self, post_id: str, user_id: str) -> bool:
-        """Eliminar un post (solo el autor puede eliminarlo)"""
+        #Eliminar un post (solo el autor puede eliminarlo)
         try:
             result = self.posts_collection.delete_one({
                 "_id": post_id,
@@ -213,7 +213,7 @@ class PostService:
             return False
     
     def get_post_by_id(self, post_id: str) -> Optional[Post]:
-        """Obtener un post específico por ID"""
+        #Obtener un post específico por ID
         try:
             post_doc = self.posts_collection.find_one({"_id": post_id})
             if post_doc:
@@ -225,7 +225,7 @@ class PostService:
             return None
     
     def search_posts(self, query: str, limit: int = 20) -> List[Post]:
-        """Buscar posts por contenido"""
+        #Buscar posts por contenido
         try:
             clean_query = SecurityValidator.sanitize_input(query)
             if not clean_query.strip():

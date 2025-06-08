@@ -13,7 +13,7 @@ class AuthService:
         self.user_repo = user_repo
     
     def hash_password(self, password: str) -> str:
-        """Hash de la contraseña usando SHA-256"""
+        #Hash de la contraseña usando SHA-256
         return hashlib.sha256(password.encode()).hexdigest()
     
     def register_user(self, username: str, email: str, password: str) -> tuple[bool, str]:
@@ -72,5 +72,5 @@ class AuthService:
         return True, user, "Login exitoso"
     
     def get_all_users(self) -> list[User]:
-        """Obtener lista de todos los usuarios (para demo)"""
+        #Obtener lista de todos los usuarios (para demo)
         return self.user_repo.get_all()

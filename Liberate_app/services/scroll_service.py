@@ -14,12 +14,12 @@ class ScrollLimitService:
         self._observers = []  #cambio
 
     def attach(self, observer): #
-        """Agregar un observador para notificaciones de cambios"""
+        #Agregar un observador para notificaciones de cambios
         if observer not in self._observers:
             self._observers.append(observer)#cambio
 
     def check_scroll_limit(self, user: User) -> bool:
-        """Verificar si el usuario puede seguir haciendo scroll"""
+        #Verificar si el usuario puede seguir haciendo scroll
         try:
             # Resetear límites si es un nuevo día
             self._reset_daily_limits_if_needed(user)
@@ -32,7 +32,7 @@ class ScrollLimitService:
             return False
     
     def add_scroll_time(self, user: User, seconds: int) -> bool:
-        """Agregar tiempo de scroll al usuario"""
+        #Agregar tiempo de scroll al usuario
         try:
             # Resetear límites si es un nuevo día
             self._reset_daily_limits_if_needed(user)
@@ -62,7 +62,7 @@ class ScrollLimitService:
             return False
     
     def get_remaining_scroll_time(self, user: User) -> int:
-        """Obtener tiempo de scroll restante en segundos"""
+        #Obtener tiempo de scroll restante en segundos
         try:
             self._reset_daily_limits_if_needed(user)
             remaining = self.DAILY_SCROLL_LIMIT - user.scroll_time_today
@@ -73,7 +73,7 @@ class ScrollLimitService:
             return 0
     
     def get_scroll_stats(self, user: User) -> dict:
-        """Obtener estadísticas de scroll del usuario"""
+        #Obtener estadísticas de scroll del usuario
         try:
             self._reset_daily_limits_if_needed(user)
             
@@ -99,7 +99,7 @@ class ScrollLimitService:
             return {}
     
     def reset_user_scroll_time(self, user: User) -> bool:
-        """Resetear tiempo de scroll del usuario (para admin)"""
+        #Resetear tiempo de scroll del usuario (para admin)
         try:
             user.scroll_time_today = 0
             user.last_scroll_reset = datetime.now().date()
@@ -121,7 +121,7 @@ class ScrollLimitService:
             return False
     
     def _reset_daily_limits_if_needed(self, user: User):
-        """Resetear límites diarios si es necesario"""
+        #Resetear límites diarios si es necesario
         today = datetime.now().date()
         
         if user.last_scroll_reset != today:
@@ -140,7 +140,7 @@ class ScrollLimitService:
             )
     
     def get_all_users_scroll_stats(self) -> list:
-        """Obtener estadísticas de scroll de todos los usuarios (para admin)"""
+        #Obtener estadísticas de scroll de todos los usuarios (para admin)
         try:
             users_data = self.users_collection.find({}, {
                 "username": 1,
@@ -154,8 +154,8 @@ class ScrollLimitService:
                 temp_user = User(
                     user_doc["_id"],
                     user_doc["username"],
-                    "",  # email no necesario aquí
-                    ""   # password no necesario aquí
+                    "",  
+                    ""   
                 )
                 temp_user.scroll_time_today = user_doc.get("scroll_time_today", 0)
                 temp_user.last_scroll_reset = datetime.fromisoformat(
@@ -173,7 +173,7 @@ class ScrollLimitService:
             return []
     
     def is_scroll_warning_needed(self, user: User) -> bool:
-        """Verificar si se debe mostrar advertencia de tiempo"""
+        #Verificar si se debe mostrar advertencia de tiempo
         try:
             remaining = self.get_remaining_scroll_time(user)
             # Mostrar advertencia cuando quedan 5 minutos o menos
@@ -184,7 +184,7 @@ class ScrollLimitService:
             return False
     
     def get_daily_usage_report(self, user: User) -> str:
-        """Generar reporte de uso diario"""
+        #Generar reporte de uso diario
         try:
             stats = self.get_scroll_stats(user)
             

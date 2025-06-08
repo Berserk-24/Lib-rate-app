@@ -29,14 +29,11 @@ class ChatWindow:
 
         self.load_messages()  
 
-        # Aquí puedes cargar mensajes previos y mostrar en messages_area
-
     def send_message(self):
         content = self.entry.get().strip()
         if not content:
             return
-
-        # Suponiendo que tienes self.current_user y self.other_user definidos
+        
         msg = Message(
             message_id=str(uuid.uuid4()),
             sender_id=self.current_user.user_id,
@@ -58,7 +55,7 @@ class ChatWindow:
         self.messages_area.config(state='disabled')
 
     def share_location(self):
-        # Pide la ubicación al usuario (ejemplo simple con un input dialog)
+        # Pide la ubicación al usuario 
         from tkinter.simpledialog import askstring
         location = askstring("Compartir ubicación", "Ingresa tu ubicación (ej: Parque Central, 10.123, -74.123):")
         if not location:
@@ -75,7 +72,7 @@ class ChatWindow:
         self.load_messages()
 
     def plan_meeting(self):
-    # Localización simulada (puedes personalizar el texto)
+    # Localización simulada 
         simulated_location = "Café Central, Calle 123, 10.123, -74.123"
         msg = Message(
             message_id=str(uuid.uuid4()),

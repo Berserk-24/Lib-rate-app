@@ -24,13 +24,13 @@ class DatabaseManager:
         self._is_connected = False
     
     def _get_default_connection_string(self) -> str:
-        """Obtener string de conexión por defecto"""
+        #Obtener string de conexión por defecto
         # Primero intentar variables de entorno
         mongo_uri = os.getenv('MONGODB_URI')
         if mongo_uri:
             return mongo_uri
         
-        # Configuración local por defecto
+        # Configuración local
         host = os.getenv('MONGODB_HOST', 'localhost')
         port = int(os.getenv('MONGODB_PORT', 27017))
         username = os.getenv('MONGODB_USERNAME')
@@ -42,7 +42,7 @@ class DatabaseManager:
             return f"mongodb://{host}:{port}"
     
     def connect(self) -> bool:
-        """Conectar a la base de datos"""
+        #Conectarse a mongoDB
         try:
             print(f"Conectando a MongoDB: {self.connection_string.replace(os.getenv('MONGODB_PASSWORD', ''), '***') if os.getenv('MONGODB_PASSWORD') else self.connection_string}")
             
@@ -72,7 +72,7 @@ class DatabaseManager:
             return False
     
     def disconnect(self):
-        """Desconectar de la base de datos"""
+        #Desconectar de la base de datos
         try:
             if self.client:
                 self.client.close()
@@ -82,7 +82,7 @@ class DatabaseManager:
             print(f"Error desconectando: {e}")
     
     def is_connected(self) -> bool:
-        """Verificar si está conectado"""
+        #Verificar si está conectado
         if not self._is_connected or not self.client:
             return False
         
@@ -95,12 +95,12 @@ class DatabaseManager:
             return False
     
     def reconnect(self) -> bool:
-        """Reconectar a la base de datos"""
+        #Reconectar a la base de datos
         self.disconnect()
         return self.connect()
     
     def _setup_indexes(self):
-        """Configurar índices de la base de datos"""
+        #Configurar índices de la base de datos
         try:
             # Índices para usuarios
             self.db.users.create_index("username", unique=True)
@@ -123,7 +123,7 @@ class DatabaseManager:
             print(f"⚠️ Error configurando índices: {e}")
     
     def get_database_stats(self) -> dict:
-        """Obtener estadísticas de la base de datos"""
+        #Obtener estadísticas de la base de datos
         try:
             if not self.is_connected():
                 return {"error": "No conectado a la base de datos"}
@@ -161,7 +161,7 @@ class DatabaseManager:
             return {"error": f"Error obteniendo estadísticas: {e}"}
     
     def backup_collection(self, collection_name: str, backup_path: str = None) -> bool:
-        """Crear backup de una colección específica"""
+        #Crear backup de una colección específica
         try:
             if not self.is_connected():
                 return False
@@ -199,7 +199,7 @@ class DatabaseManager:
             return False
     
     def restore_collection(self, collection_name: str, backup_path: str) -> bool:
-        """Restaurar colección desde backup"""
+        #Restaurar colección desde backup
         try:
             if not self.is_connected():
                 return False
@@ -217,10 +217,7 @@ class DatabaseManager:
                 return True
             
             collection = self.db[collection_name]
-            
-            # Limpiar colección existente (opcional)
-            # collection.delete_many({})
-            
+
             # Insertar documentos
             if isinstance(documents, list):
                 collection.insert_many(documents)
@@ -235,7 +232,7 @@ class DatabaseManager:
             return False
     
     def cleanup_old_data(self, days: int = 30) -> bool:
-        """Limpiar datos antiguos"""
+        #Limpiar datos antiguos
         try:
             if not self.is_connected():
                 return False
@@ -259,7 +256,7 @@ class DatabaseManager:
             return False
     
     def test_connection(self) -> dict:
-        """Probar conexión y retornar información detallada"""
+        #Probar conexión y retornar información detallada
         result = {
             "success": False,
             "message": "",
@@ -295,10 +292,10 @@ class DatabaseManager:
         return result
     
     def __enter__(self):
-        """Context manager entry"""
+
         self.connect()
         return self
     
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """Context manager exit"""
+
         self.disconnect()

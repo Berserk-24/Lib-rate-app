@@ -14,7 +14,7 @@ class UserRepository:
         self.collection = db_manager.db.users
     
     def get_all_users(self):
-        """Devuelve una lista de todos los usuarios"""
+        #lista de todos los usuarios
         users = []
         for doc in self.collection.find():
             users.append(User(
@@ -26,7 +26,7 @@ class UserRepository:
         return users
 
     def create(self, user: User) -> bool:
-        """Crear nuevo usuario"""
+        # nuevo usuario
         try:
             user_doc = user.to_dict()
             self.collection.insert_one(user_doc)
@@ -38,7 +38,7 @@ class UserRepository:
             return False
     
     def get_by_username(self, username: str) -> Optional[User]:
-        """Obtener usuario por nombre de usuario"""
+        #Obtener usuario por nombre de usuario
         try:
             user_doc = self.collection.find_one({"username": username})
             if user_doc:
@@ -49,7 +49,7 @@ class UserRepository:
             return None
     
     def get_by_email(self, email: str) -> Optional[User]:
-        """Obtener usuario por email"""
+        #Obtener usuario por email
         try:
             user_doc = self.collection.find_one({"email": email})
             if user_doc:
@@ -59,13 +59,13 @@ class UserRepository:
             print(f"Error obteniendo usuario por email: {e}")
             return None
         
-class PostRepository: #agregado
+class PostRepository: 
     def __init__(self, db_manager: DatabaseManager):
         self.db_manager = db_manager
         self.collection = db_manager.db.posts
 
     def create(self, post: Post) -> bool:
-        """Crear nuevo post"""
+        #Crear nuevo post
         try:
             post_doc = post.to_dict()
             self.collection.insert_one(post_doc)
@@ -75,7 +75,7 @@ class PostRepository: #agregado
             return False
 
     def get_all(self) -> List[Post]:
-        """Obtener todos los posts"""
+        #Obtener todos los posts
         try:
             posts_cursor = self.collection.find().sort("created_at", -1)
             return [Post.from_dict(doc) for doc in posts_cursor]
@@ -84,7 +84,7 @@ class PostRepository: #agregado
             return []
 
     def get_by_user(self, user_id: str) -> List[Post]:
-        """Obtener posts por ID de usuario"""
+        #Obtener posts por ID de usuario
         try:
             posts_cursor = self.collection.find({"user_id": user_id}).sort("created_at", -1)
             return [Post.from_dict(doc) for doc in posts_cursor]

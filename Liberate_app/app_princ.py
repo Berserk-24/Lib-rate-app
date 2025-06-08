@@ -26,7 +26,6 @@ from database.repositories import UserRepository, PostRepository, MessageReposit
 class SocialApp:
     def __init__(self):
         self.root = tk.Tk()
-        #self.root.withdraw()  # Ocultar ventana principal hasta login
         
         # Inicializar componentes
         self.db_manager = DatabaseManager()
@@ -59,18 +58,18 @@ class SocialApp:
         self.show_login()
     
     def show_login(self):
-        """Mostrar ventana de login"""
+        #Mostrar ventana de login
         self.login_window = LoginWindow(self.root, self.auth_service, self.on_login_success)
     
     def on_login_success(self, user: User):
-        """Callback cuando el login es exitoso"""
+        #Callback cuando el login es exitoso
         self.current_user = user
         if hasattr(self, 'login_window') and self.login_window:
-            self.login_window.window.destroy()  # O el atributo correcto si usas Toplevel
+            self.login_window.window.destroy() 
         self.show_main_window()
     
     def show_main_window(self):
-        """Mostrar ventana principal después del login"""
+        #Mostrar ventana principal después del login
         self.reactive_ui = ReactiveUI()
         self.post_service = PostService(self.db_manager, self.reactive_ui)
 
@@ -88,7 +87,7 @@ class SocialApp:
         )
     
     def run(self):
-        """Ejecutar la aplicación"""
+        #Ejecutar 
         try:
             self.root.mainloop()
         except KeyboardInterrupt:

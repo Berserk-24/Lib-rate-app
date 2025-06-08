@@ -22,7 +22,7 @@ class User:
         self.created_at = datetime.now()
     
     def to_dict(self) -> dict:
-        """Convertir usuario a diccionario para MongoDB"""
+        #Convertir usuario a diccionario para mongoDB
         return {
             "_id": self.user_id,
             "user_id": self.user_id,
@@ -39,7 +39,7 @@ class User:
     
     @classmethod
     def from_dict(cls, data: dict) -> 'User':
-        """Crear usuario desde diccionario de MongoDB"""
+        #Crear usuario desde diccionario de mongoDB
         user = cls(
             data["user_id"],
             data["username"],
@@ -55,7 +55,7 @@ class User:
         return user
     
     def reset_daily_limits(self):
-        """Resetear límites diarios"""
+        #Resetear límites diarios
         today = datetime.now().date()
         if self.last_post_date != today:
             self.daily_posts = 0

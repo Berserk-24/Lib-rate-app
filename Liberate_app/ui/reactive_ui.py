@@ -210,7 +210,7 @@ class ReactiveUI:
         """
         if element_id in self._ui_elements:
             state_key = self._ui_elements[element_id]['state_key']
-            # Aquí deberíamos desuscribirnos, pero necesitaríamos mantener referencia al callback
+
             del self._ui_elements[element_id]
     
     def get_event_history(self, event_name: Optional[str] = None, 

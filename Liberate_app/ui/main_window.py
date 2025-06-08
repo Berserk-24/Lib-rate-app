@@ -596,7 +596,7 @@ class MainWindow:
         self.notebook.add(self.chat_frame, text="💬 Chat")
 
         # Lista de usuarios
-        users = self.user_repo.get_all_users()  # Debes tener este método en tu UserRepository
+        users = self.user_repo.get_all_users()  
         usernames = [u.username for u in users if u.user_id != self.current_user.user_id]
 
         self.user_listbox = tk.Listbox(self.chat_frame, height=10)

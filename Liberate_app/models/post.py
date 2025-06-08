@@ -43,10 +43,10 @@ class Post:
         self.likes = 0
         self.created_at = created_at if created_at else datetime.now() #cambio
         self.liked_by: List[str] = []  # Lista de user_ids que dieron like
-        self.image_path: Optional[str] = image_path  # Ruta a imagen adjunta
+        self.image_path: Optional[str] = image_path  # "Ruta" a imagen adjunta
     
     def to_dict(self) -> dict:
-        """Convertir post a diccionario para MongoDB"""
+        #Convertir post a diccionario para MongoDB
         return {
             "_id": self.post_id,
             "post_id": self.post_id,
@@ -65,7 +65,7 @@ class Post:
     
     @classmethod
     def from_dict(cls, data: dict) -> 'Post':
-        """Crear post desde diccionario de MongoDB"""
+        #Crear post desde diccionario de MongoDB
         post = cls(
             data["post_id"],
             data["user_id"],
@@ -92,7 +92,7 @@ class Post:
         return post
     
     def add_like(self, user_id: str) -> bool:
-        """Agregar like si el usuario no ha dado like antes"""
+
         if user_id not in self.liked_by:
             self.liked_by.append(user_id)
             self.likes += 1
@@ -100,7 +100,7 @@ class Post:
         return False
     
     def remove_like(self, user_id: str) -> bool:
-        """Quitar like del usuario"""
+        
         if user_id in self.liked_by:
             self.liked_by.remove(user_id)
             self.likes -= 1
@@ -108,10 +108,10 @@ class Post:
         return False
     
     def has_liked(self, user_id: str) -> bool:
-        """Verificar si el usuario ya dio like"""
+        #corazon?
         return user_id in self.liked_by
     
     def add_comment(self, comment: Comment):
-        """Agregar comentario al post"""
+       
         self.comments.append(comment)
         
